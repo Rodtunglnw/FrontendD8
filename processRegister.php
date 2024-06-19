@@ -4,10 +4,7 @@
     // $array2 = 
     // echo json_encode(555);
     if (isset($_POST)) {
-        $username = $_POST["username"];
-        $password = $_POST['passsword'];
-        
-        echo json_encode($password);
+        echo json_encode($_POST);
         
     } else {
         echo json_encode(344324);

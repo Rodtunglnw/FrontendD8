@@ -6,35 +6,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Register</title>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
- 
-    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script> -->
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+    <link rel="stylesheet" href="/resources/demos/style.css">
+    <script>
+        $(function () {
+            $("#datepicker").datepicker({
+                changeMonth: true,
+                changeYear: true,
+                showButtonPanel: true,
+            });
+        });
+    </script>
 </head>
 
 <body>
     <h1>Register</h1>
-    <!-- <form id="myForm"> -->
-    <div id="divForm">
+    <form id ='formRegister'>
         <input type="text" name="username" id="username" maxlength="50">
         <input type="password" name="password" id="password">
-        
-        <input type="submit" onclick="checkForm()"></input>
-    </div>
-    <!-- </form> -->
-
-    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+        <p>Date: <input type="text" id="datepicker"></p>
+        <input type="button" value="Submit" onclick="checkForm()">
+    </form>
     <script>
         function checkForm() {
-
             let username = document.getElementById('username').value;
             let password = document.getElementById('password').value;
             let rex_username = /^[A-Za-z]{8,12}$/;
-            const formData = new FormData();
-            formData.append("username", username);
-            formData.append('password', password);
-            console.log(formData);
-
-            if (username == '') {
+            let formData = $('#formRegister').serialize();
+                console.log(formData);
+       
+            
+            if (username === '') {
                 Swal.fire({
                     title: "กรอกข้อมูลไม่ถูกต้อง",
                     text: "เช็คข้อมูล Username อีกที",
@@ -51,7 +55,7 @@
                 return false;
             }
 
-            if (rex_username.test(username) == false) {
+            if (rex_username.test(username) === false) {
                 Swal.fire({
                     title: "กรอกข้อมูลไม่ถูกต้อง",
                     text: "เช็คข้อมูล Username อีกที",
@@ -69,19 +73,18 @@
                 confirmButtonText: "Yes, delete it!"
             }).then((result) => {
                 if (result.isConfirmed) {
-
-                    const datastr = "username=" + username + "&" + "passsword=" + password; // เป็นการส่งค่าแบบ key => value
+                    // const datastr = "username=" + username + "&password=" + password; // Fix the typo here
 
                     $.ajax({
                         type: "POST",
                         url: 'processRegister.php',
-                        data: datastr,
+                        data: formData,
                         dataType: 'json',
-                        success: function(response) {
+                        success: function (response) {
                             console.log(response);
                             Swal.fire({
                                 title: " Success",
-                                text: response,
+                                text: response.username,
                                 icon: "success"
                             });
                         }
@@ -90,7 +93,6 @@
             });
         }
     </script>
-
 </body>
 
 </html>
